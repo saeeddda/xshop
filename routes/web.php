@@ -18,6 +18,7 @@ Route::prefix(config('app.panel.prefix'))->name('admin.')->group(
 
                 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+                Route::any('logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
                 Route::post('ckeditor/upload', [\App\Http\Controllers\Admin\CkeditorController::class, 'upload'])->name('ckeditor.upload');
                 Route::get('adminlogs', [\App\Http\Controllers\Admin\AdminLogController::class, 'index'])->name('adminlog.index');
                 Route::get('guestlog', [\App\Http\Controllers\Admin\GuestLogController::class, 'index'])->name('guestlog.index');
@@ -360,6 +361,7 @@ Route::prefix(config('app.panel.prefix'))->name('admin.')->group(
                         Route::post('update/{area}', [\App\Http\Controllers\Admin\AreaController::class, "update"])->name('update');
                         Route::post('update/model/{model}/{id}', [\App\Http\Controllers\Admin\AreaController::class, "updateModel"])->name('update.model');
                         Route::get('sort/{area}', [\App\Http\Controllers\Admin\AreaController::class, "sort"])->name('sort');
+                        Route::get('build', [\App\Http\Controllers\Admin\AreaController::class, "build"])->name('build');
                         Route::post('sort-save/{area}', [\App\Http\Controllers\Admin\AreaController::class, "sortSave"])->name('sort-save');
                     }
                 );
