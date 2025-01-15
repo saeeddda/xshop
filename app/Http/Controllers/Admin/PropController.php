@@ -7,6 +7,7 @@ use App\Http\Controllers\XController;
 use App\Http\Requests\PropSaveRequest;
 use App\Models\Access;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\Prop;
 use Illuminate\Http\Request;
 use App\Helper;
@@ -30,8 +31,8 @@ class PropController extends XController
     protected $buttons = [
         'edit' =>
             ['title' => "Edit", 'class' => 'btn-outline-primary', 'icon' => 'ri-edit-2-line'],
-        'show' =>
-            ['title' => "Detail", 'class' => 'btn-outline-light', 'icon' => 'ri-eye-line'],
+//        'show' =>
+//            ['title' => "Detail", 'class' => 'btn-outline-light', 'icon' => 'ri-eye-line'],
         'destroy' =>
             ['title' => "Remove", 'class' => 'btn-outline-danger delete-confirm', 'icon' => 'ri-close-line'],
     ];
@@ -123,12 +124,26 @@ class PropController extends XController
 
     public function destroy(Prop $item)
     {
+        foreach (Product::whereHasMeta($item->name)->get() as $product){
+            $product->removeMeta($item->name);
+        }
         return parent::delete($item);
     }
 
 
+    private function updateName($item, $request)
+    {
+        if ($item->name != $request->input('name') && $request->input('name') != ''){
+            foreach (Product::whereHasMeta($item->name)->get() as $product){
+                $product->setMeta($request->input('name'),$product->getMeta($item->name));
+                $product->removeMeta($item->name);
+            }
+        }
+    }
+
     public function update(Request $request, Prop $item)
     {
+        $this->updateName($item, $request);
         return $this->bringUp($request, $item);
     }
 

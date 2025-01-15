@@ -1,4 +1,4 @@
-<section class='LianaInvoice'>
+<section class='LianaInvoice live-setting' data-live="{{$data->area_name.'_'.$data->part}}">
     <div class="p-3">
 
         <div class="row  mb-4">
@@ -68,8 +68,8 @@
                             -
                         @else
                             @foreach($order->quantity->meta as $m)
-                                <span>
-                                {{$m->human_value}}
+                            <span>
+                                {!! $m['human_value']??'-' !!}
                             </span>
                             @endforeach
                         @endif

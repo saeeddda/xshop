@@ -1,4 +1,4 @@
-<section class='ParallelCategoriesGrid'>
+<section class='ParallelCategoriesGrid live-setting' data-live="{{$data->area_name.'_'.$data->part}}">
     <div class="{{gfx()['container']}}">
         @if(count($category->parallelCategories()) > 0)
             <div>
@@ -9,7 +9,10 @@
                     @foreach($category->parallelCategories() as $subCat)
                         <div class="col-md">
                             <div class="parallel-category">
-                                <img src="{{$subCat->imgUrl()}}" alt="{{$subCat->name}}" class="img-fluid" loading="lazy">
+                                <a href="{{$subCat->webUrl()}}">
+                                    <img src="{{$subCat->imgUrl()}}" alt="{{$subCat->name}}" class="img-fluid"
+                                         loading="lazy">
+                                </a>
                                 <h4>
                                     {{$subCat->name}}
                                 </h4>

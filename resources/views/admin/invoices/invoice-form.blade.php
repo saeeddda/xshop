@@ -101,7 +101,7 @@
                                 {{__('Status')}}
                             </label>
                             <searchable-select
-                                :items='{{arrayNormolizeVueCompatible(\App\Models\Invoice::$invoiceStatus, true)}}'
+                                :items='{{arrayNormalizeVueCompatible(\App\Models\Invoice::$invoiceStatus, true)}}'
                                 title-field="name"
                                 value-field="name"
                                 xname="status"
@@ -189,9 +189,10 @@
                                 -
                             @else
                                 @foreach($order->quantity->meta as $m)
-                                    <span>
-                                    {{$m->human_value}}
-                                </span>
+                                    <div title="{{$m['label']}}" class="float-start p-2">
+                                        {{$m['label']}}:
+                                        {!! $m['human_value']??'-' !!}
+                                    </div>
                                 @endforeach
                             @endif
                         </td>

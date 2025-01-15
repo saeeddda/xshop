@@ -29,17 +29,19 @@ class AreaController extends Controller
             if (File::exists(resource_path() . '/views/segments/' . $seg)) {
                 $dirs = File::directories(resource_path() . '/views/segments/' . $seg);
                 foreach ($dirs as $dir) {
-                    $temp = explode('/', $dir);
+                    $tmp = str_replace(DIRECTORY_SEPARATOR,'/',$dir);
+                    $temp = explode('/', $tmp);
                     $valids[] = [
                         'segment' => $temp[count($temp) - 2],
                         'part' => $temp[count($temp) - 1],
-                        'data' => json_decode(file_get_contents($dir . '/' . $temp[count($temp) - 1] . '.json'), true)
+                        'data' => json_decode(file_get_contents($dir . DIRECTORY_SEPARATOR. $temp[count($temp) - 1] . '.json'), true)
                     ];
                 }
             }
         }
 
-        return view('admin.areas.area-design', compact('area', 'valids'));
+        return response()->view('admin.areas.area-design', compact('area', 'valids'))
+            ->header('Cache-Control','public, max-age=31536000, immutable');
     }
 
     public function designModel(Area $area, $model, $id)
@@ -67,11 +69,12 @@ class AreaController extends Controller
             if (File::exists(resource_path() . '/views/segments/' . $seg)) {
                 $dirs = File::directories(resource_path() . '/views/segments/' . $seg);
                 foreach ($dirs as $dir) {
-                    $temp = explode('/', $dir);
+                    $tmp = str_replace(DIRECTORY_SEPARATOR,'/',$dir);
+                    $temp = explode('/', $tmp);
                     $valids[] = [
                         'segment' => $temp[count($temp) - 2],
                         'part' => $temp[count($temp) - 1],
-                        'data' => json_decode(file_get_contents($dir . '/' . $temp[count($temp) - 1] . '.json'), true)
+                        'data' => json_decode(file_get_contents($dir . DIRECTORY_SEPARATOR. $temp[count($temp) - 1] . '.json'), true)
                     ];
                 }
             }
@@ -225,6 +228,7 @@ class AreaController extends Controller
 
     public function build(){
 
+        $exitCode = \Artisan::call('client');
         $exitCode = \Artisan::call('build');
 
         // Get the command output from cache
@@ -243,5 +247,10 @@ class AreaController extends Controller
             \Log::error($output);
             return redirect()->back()->with(['message' => __('Assets build failed')]);
         }
+    }
+
+    public function guide(){
+        $areas = Area::all();
+        return view('admin.areas.area-guide', compact('areas'));
     }
 }

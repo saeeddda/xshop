@@ -31,6 +31,8 @@ import './panel/sotable-controller.js';
 import './panel/prototypes.js';
 import './panel/panel-window-loader.js';
 import './panel/responsive-control.js';
+import './panel/fast-edit.js';
+import './panel/fast-attachment.js';
 // import './panel/seo-analyzer.js';
 
 // chartjs.defaults.defaultFontFamily = "Vazir";
@@ -117,6 +119,14 @@ app.component('lat-lng', Latlng);
 
 import MenuItemInput from "./components/MenuItemInput.vue";
 app.component('menu-item-input', MenuItemInput);
+
+
+import VueTimepicker from "./components/vueTimePicker.vue";
+app.component('vue-time-picker', VueTimepicker);
+
+
+import fastAttaching from "./components/FastAttaching.vue";
+app.component('fast-attaching', fastAttaching);
 
 /**
  * The following block of code may be used to automatically register your

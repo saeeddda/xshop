@@ -19,6 +19,11 @@
 - UI/UX شخصی‌سازی شده
 - دوستانه تر شدن محیط توسعه
 
+## مستندات 
+
+- [📄 مستندات کامل 📄](https://4xmen.github.io/xshop/#/)
+- [🇺🇸 English read me](README.md)
+
 ## نحوه نصب [ حالت توسعه دهنده ]
 
 > [!مهم]  
@@ -70,6 +75,15 @@ php artisan seeding:prepare
 
 ```bash
 php artisan seeding:image Product digital
+```
+</div>
+
+یا برای همه مدل‌ها یک‌جا از دستور زیر استفاده کنید:
+
+<div dir="ltr">
+
+```bash
+php artisan seeding:all digital
 ```
 </div>
 

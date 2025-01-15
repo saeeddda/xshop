@@ -28,6 +28,7 @@
                    @if(isset($item))
                        xvalue="{{old('title',implode(',,',$item->tags->pluck('name')->toArray()??''))}}"
             @endif
+                   auto-complete="{{route('v1.tag.search','')}}/"
         ></tag-input>
 
     </div>
@@ -185,6 +186,17 @@
 
 {{--</div>--}}
 <hr>
-<div class="mt-4">
-    @include('components.panel-attachs',['attachs' => $item->attachs??[]])
+<div class="mt-4 position-relative">
+    <h3>
+        {{__("Attachments")}}
+    </h3>
+    <br>
+    <fast-attaching
+        :attachments='@json($item->attachs)'
+        xlang="{{config('app.locale')}}"
+        upload-url="{{route('admin.attachment.attaching')}}"
+        detach-url="{{route('admin.attachment.detach','')}}/"
+        model="{{get_class($item)}}"
+        id="{{$item->id}}"
+    ></fast-attaching>
 </div>

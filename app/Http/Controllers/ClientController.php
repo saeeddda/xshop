@@ -92,7 +92,8 @@ class ClientController extends Controller
             __('Video clips') => clipsUrl(),
             $clip->title => null,
         ];
-        return view('client.default-list', compact('area', 'clip', 'title', 'subtitle', 'breadcrumb'));
+        $model = $clip;
+        return view('client.default-list', compact('area', 'clip', 'title', 'subtitle', 'breadcrumb','model'));
     }
 
     public function gallery($slug)
@@ -175,7 +176,8 @@ class ClientController extends Controller
             __('Attachments') => attachmentsUrl(),
             $attachment->title => null,
         ];
-        return view('client.default-list', compact('area', 'attachment', 'title', 'subtitle', 'breadcrumb'));
+        $model = $attachment;
+        return view('client.default-list', compact('area', 'attachment', 'title', 'subtitle', 'breadcrumb','model'));
     }
 
     public function tag($slug)
@@ -221,7 +223,9 @@ class ClientController extends Controller
             }
         }
 
-        $comment->parent_id = $request->input('parent_id', null);
+        if ($request->input('parent_id') != '') {
+            $comment->parent_id = $request->input('parent_id', null);
+        }
         $comment->body = $request->input('message');
         $comment->commentable_type = $request->input('commentable_type');
         $comment->commentable_id = $request->input('commentable_id');
@@ -863,5 +867,34 @@ class ClientController extends Controller
             'OK' => true,
             'message' => __('Your rate registered'),
         ];
+    }
+
+
+    public function postRss(){
+        // Fetch the latest posts from the database
+        $posts = Post::orderBy('created_at', 'desc')->take(10)->get(); // Adjust the number of posts as needed
+
+        $xmlContent = '<?xml version="1.0" encoding="UTF-8" ?>' . PHP_EOL;
+        $xmlContent .= view('website.rss.post',compact('posts'))->render(); // Render the view and append to XML content
+
+        // Return the XML response
+        return response($xmlContent, 200)
+            ->header('Content-Type', 'text/xml');
+    }
+    public function productRss(){
+        // Fetch the latest products from the database
+        $products = Product::orderBy('created_at', 'desc')->take(10)->get(); // Adjust the number of posts as needed
+
+        $xmlContent = '<?xml version="1.0" encoding="UTF-8" ?>' . PHP_EOL;
+        $xmlContent .= view('website.rss.product',compact('products'))->render(); // Render the view and append to XML content
+
+        // Return the XML response
+        return response($xmlContent, 200)
+            ->header('Content-Type', 'text/xml');
+    }
+
+    public function underConstruction(){
+        $title = __('Under Construction') . ' - ' . config('app.name');
+        return view('client.under-construction', compact('title'));
     }
 }
